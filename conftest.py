@@ -28,7 +28,6 @@ def register_new_user(generate_user):
 
     payload = generate_user
 
-    # отправляем запрос на регистрацию пользователя и сохраняем ответ в переменную response
-    response = requests.post(Urls.REGISTER_URL, data=payload)
+    requests.post(Urls.REGISTER_URL, data=payload)
 
     return payload
