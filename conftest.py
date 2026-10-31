@@ -28,6 +28,12 @@ def register_new_user(generate_user):
 
     payload = generate_user
 
-    requests.post(Urls.REGISTER_URL, data=payload)
+    requests.post(Urls.REGISTER_URL, json=payload)
 
     return payload
+
+@pytest.fixture
+def auth_token(generate_user):
+    response = requests.post(Urls.REGISTER_URL, json=generate_user)
+   
+    return response.json().get("accessToken")
