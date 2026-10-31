@@ -1,7 +1,7 @@
 import requests
-from faker import Faker
 import allure
 
+from faker import Faker
 from data.urls import Urls
 
 class TestLoginUser:
@@ -13,8 +13,8 @@ class TestLoginUser:
             user_data = register_new_user
 
             login_payload = {
-                "email": user_data[0],
-                "password": user_data[1]
+                "email": user_data["email"],
+                "password": user_data["password"]
             }
 
         with allure.step('Логин пользователем'):
@@ -53,7 +53,7 @@ class TestLoginUser:
             user_data = register_new_user
         
             login_payload = {
-                "email": user_data[0],
+                "email": user_data["email"],
                 "password": "test45678"
             }
 
