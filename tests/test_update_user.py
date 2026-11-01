@@ -10,9 +10,9 @@ class TestUpdateUser:
     @allure.title('Изменение данных авторизованным пользователем')
     @allure.description('Проверяем, что авторизованным пользователем можно изменить 3 поля')
     @pytest.mark.parametrize("field", ["email", "name", "password"])
-    def test_update_user_with_auth(self, auth_token, generate_user, field):
+    def test_update_user_with_auth(self, register_new_user, generate_user, field):
         with allure.step('Подготовка пользователя и вытаскивание токена'):
-            headers = {"Authorization": auth_token}
+            headers = {"Authorization": register_new_user["token"]}
 
         with allure.step('Подготовка новых данных для пользователя'):
             new_user_data = generate_user

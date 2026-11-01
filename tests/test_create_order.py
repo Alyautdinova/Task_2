@@ -7,9 +7,9 @@ from data.urls import Urls
 class TestCreateOrder:
     @allure.title('Создание заказа авторизованным и с корректными ингредиентами')
     @allure.description('Проверяем, что авторизованным пользователем можно и с корректными ингредиентами можно создать заказ')
-    def test_create_order_with_auth_and_valid_ingredients(self, auth_token, get_valid_ingredients):
+    def test_create_order_with_auth_and_valid_ingredients(self, register_new_user, get_valid_ingredients):
         with allure.step('Подготовка данных для создание заказа'):
-            headers = {"Authorization": auth_token}
+            headers = {"Authorization": register_new_user["token"]}
             payload = {"ingredients": get_valid_ingredients}
 
         with allure.step('Создание заказа авторизованным и с корректными ингредиентами'):

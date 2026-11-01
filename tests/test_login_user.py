@@ -10,7 +10,7 @@ class TestLoginUser:
     @allure.description('Проверяем, что запрос отдает 200 и accessToken пользователя при входе под существующим в системе пользователем')
     def test_login_success(self, register_new_user):
         with allure.step('Подготовка данных для входа пользователя'):
-            user_data = register_new_user
+            user_data = register_new_user["payload"]
 
             login_payload = {
                 "email": user_data["email"],
@@ -50,7 +50,7 @@ class TestLoginUser:
     def test_login_with_not_exist_password(self, register_new_user):
 
         with allure.step('Подготовка данных для входа пользователя'):
-            user_data = register_new_user
+            user_data = register_new_user["payload"]
         
             login_payload = {
                 "email": user_data["email"],

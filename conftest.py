@@ -28,16 +28,16 @@ def register_new_user(generate_user):
 
     payload = generate_user
 
-    requests.post(Urls.REGISTER_URL, json=payload)
+    response = requests.post(Urls.REGISTER_URL, json=payload)
 
-    return payload
+    token = response.json().get("accessToken")
 
-# фикстура для создания пользователя и возвращения токена
-@pytest.fixture
-def auth_token(generate_user):
-    response = requests.post(Urls.REGISTER_URL, json=generate_user)
-   
-    return response.json().get("accessToken")
+    yield {"payload": payload, "token": token}
+    
+    # удаление юзера
+    headers = {"Authorization": token}
+    delete_response = requests.delete(Urls.USER_URL, headers=headers)
+    assert delete_response.status_code == 202
 
 # фикстура для получения валидных ID ингредиентов
 @pytest.fixture
@@ -47,3 +47,9 @@ def get_valid_ingredients():
     
     ingredients_data = response.json().get("data", [])
     return [ingredients_data[0]["_id"], ingredients_data[1]["_id"]]
+
+
+# фикстура для удаления пользователя
+@pytest.fixture
+def cleanup():
+    requests.delete(Urls.USER_URL, json=payload)

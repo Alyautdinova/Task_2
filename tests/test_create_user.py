@@ -22,7 +22,7 @@ class TestCreateUser:
     @allure.description('Проверяем, что запрос отдает 403 и ошибку при создании пользователя с данными как у существующего пользователя в системе')
     def test_create_two_identical_user(self, register_new_user):
         with allure.step('Создание второго пользователя с такими же данными как первый пользователь'):
-            payload = register_new_user
+            payload = register_new_user["payload"]
             response = requests.post(Urls.REGISTER_URL, json=payload)
 
         with allure.step('Проверка, что пользователь с данными, которые уже есть в системе, не создается'):  
