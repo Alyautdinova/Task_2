@@ -49,7 +49,13 @@ def get_valid_ingredients():
     return [ingredients_data[0]["_id"], ingredients_data[1]["_id"]]
 
 
-# фикстура для удаления пользователя
+# фикстура для создание заказа
 @pytest.fixture
-def cleanup():
-    requests.delete(Urls.USER_URL, json=payload)
+def created_order(register_new_user, get_valid_ingredients):
+    token = register_new_user["token"]
+    headers = {"Authorization": token}
+    payload = {"ingredients": get_valid_ingredients}
+    
+    response = requests.post(Urls.ORDER_URL, json=payload, headers=headers)
+    
+    return {"order_number": response.json()["order"]["number"], "token": token}
