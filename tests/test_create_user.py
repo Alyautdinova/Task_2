@@ -7,7 +7,7 @@ from data.urls import Urls
 class TestCreateUser:
     @allure.title('Создание нового пользователя')
     @allure.description('Проверяем, что запрос отдает 200 и True при создании пользователя с валидными данными')
-    def test_create_uniq_user(self, generate_user):
+    def test_create_uniq_user(self, generate_user, cleanup_user):
         with allure.step('Подготовка данных для создании пользователя'):
             payload = generate_user
 
@@ -17,6 +17,9 @@ class TestCreateUser:
         with allure.step('Проверка, что создали пользователя'):
             assert response.status_code == 200
             assert response.json()["success"] == True
+
+        with allure.step('Удаление пользователя после теста'): 
+            cleanup_user(payload["email"], payload["password"])
 
     @allure.title('Создание пользователя с данными существующими в системе')
     @allure.description('Проверяем, что запрос отдает 403 и ошибку при создании пользователя с данными как у существующего пользователя в системе')

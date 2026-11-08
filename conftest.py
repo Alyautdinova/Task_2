@@ -38,6 +38,21 @@ def register_new_user(generate_user):
     headers = {"Authorization": token}
     requests.delete(Urls.USER_URL, headers=headers)
 
+# фикстуры удаления пользователя
+@pytest.fixture
+def cleanup_user():
+    users_to_delete = []
+    
+    def login_for_cleanup(email, password):
+        users_to_delete.append({"email": email, "password": password})
+    
+    yield login_for_cleanup
+    
+    for user in users_to_delete:
+        login_response = requests.post(Urls.LOGIN_URL, json={"email": user["email"], "password": user["password"]})
+        token = login_response.json().get("accessToken")
+        requests.delete(Urls.USER_URL, headers={"Authorization": token})
+
 # фикстура для получения валидных ID ингредиентов
 @pytest.fixture
 def get_valid_ingredients():
